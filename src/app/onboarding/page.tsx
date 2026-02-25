@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { OnboardingForm } from "./OnboardingForm";
 
 export default function OnboardingPage() {
   return (
@@ -9,32 +9,7 @@ export default function OnboardingPage() {
       <p className="text-[var(--color-secondary)] mb-8">
         Step 1: Account → Step 2: Upload logo → Step 3: Confirm branding → Step 4: Go live
       </p>
-      <div className="w-full max-w-md space-y-4">
-        <input
-          type="text"
-          placeholder="Team name"
-          className="w-full px-4 py-3 rounded-lg border border-[var(--color-primary)]/30 bg-transparent"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full px-4 py-3 rounded-lg border border-[var(--color-primary)]/30 bg-transparent"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full px-4 py-3 rounded-lg border border-[var(--color-primary)]/30 bg-transparent"
-        />
-        <button
-          type="button"
-          className="w-full py-3 rounded-lg bg-[var(--color-primary)] text-white font-medium hover:opacity-90"
-        >
-          Continue →
-        </button>
-      </div>
-      <Link href="/" className="mt-6 text-[var(--color-secondary)] hover:underline">
-        Back to home
-      </Link>
+      <OnboardingForm />
     </div>
   );
 }
