@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getTeamBySlug } from "@/src/lib/tenants/config";
+import { catalogService } from "@/src/lib/services/catalog";
+import { ProductGrid } from "@/components/storefront/product-grid";
 
-export default function TeamStorefrontPage({
+export default async function TeamStorefrontPage({
   params
 }: {
   params: { teamSlug: string };
@@ -23,6 +25,8 @@ export default function TeamStorefrontPage({
       </div>
     );
   }
+
+  const products = await catalogService.listProductsForTeam(team.slug);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1.1fr)] items-start">
@@ -64,33 +68,16 @@ export default function TeamStorefrontPage({
           </div>
         </div>
 
-        <section
-          id="all-products"
-          className="space-y-3"
-        >
+        <section id="all-products" className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
               Team catalog
             </h2>
             <span className="text-[0.7rem] text-slate-500">
-              Product grid coming next · mocked data
+              Powered by mock catalog service
             </span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 opacity-70">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-[3/4] rounded-2xl border border-slate-800/70 bg-slate-900/60 flex flex-col justify-between p-3"
-              >
-                <div className="h-20 rounded-xl bg-slate-800/80 mb-3" />
-                <div className="space-y-1">
-                  <div className="h-3 w-3/4 rounded-full bg-slate-700/80" />
-                  <div className="h-3 w-1/2 rounded-full bg-slate-800/80" />
-                </div>
-                <div className="mt-2 h-3 w-1/3 rounded-full bg-slate-700/80" />
-              </div>
-            ))}
-          </div>
+          <ProductGrid products={products} />
         </section>
       </section>
 
