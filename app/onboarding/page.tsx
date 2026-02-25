@@ -12,11 +12,13 @@ export default function OnboardingPage() {
     sport,
     primaryColor,
     secondaryColor,
+    logoDataUrl,
     stylePreset,
     setTeamName,
     setSport,
     setPrimaryColor,
     setSecondaryColor,
+    setLogoDataUrl,
     setStylePreset
   } = useOnboardingStore();
 
@@ -30,7 +32,9 @@ export default function OnboardingPage() {
 
     const slug = presetToSlug[stylePreset] ?? "wildcats";
 
-    router.push(`/t/${slug}`);
+    // Add preview flag so the storefront can render with the uploaded logo
+    // and colors on top of the seeded catalog for that team.
+    router.push(`/t/${slug}?preview=1`);
   }
 
   return (
@@ -88,6 +92,51 @@ export default function OnboardingPage() {
               <option value="hockey">Hockey</option>
             </select>
           </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] items-end">
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+              Logo upload
+            </label>
+            <div className="flex items-center gap-3">
+              <input
+                type="file"
+                accept="image/*"
+                className="block w-full text-xs text-slate-300 file:mr-3 file:rounded-full file:border-0 file:bg-slate-800 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-slate-100 hover:file:bg-slate-700/90"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) {
+                    setLogoDataUrl(null);
+                    return;
+                  }
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    setLogoDataUrl(typeof reader.result === "string" ? reader.result : null);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+            </div>
+            <p className="text-[0.7rem] text-slate-500">
+              Images are kept in your browser only for this demo preview.
+            </p>
+          </div>
+          {logoDataUrl && (
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-[0.65rem] uppercase tracking-[0.16em] text-slate-500">
+                Preview
+              </span>
+              <div className="h-12 w-12 rounded-xl border border-slate-700/80 bg-slate-900/80 flex items-center justify-center overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoDataUrl}
+                  alt="Uploaded team logo preview"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">

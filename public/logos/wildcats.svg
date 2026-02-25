@@ -1,0 +1,40 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wc-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f97316" />
+      <stop offset="1" stop-color="#facc15" />
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="108" height="108" rx="24" fill="#020617" />
+  <rect x="12" y="18" width="96" height="84" rx="20" fill="url(#wc-grad)" />
+  <path
+    d="M36 78c3-14 10-28 24-36 14 8 21 22 24 36-6 3-16 6-24 6s-18-3-24-6z"
+    fill="#0f172a"
+    opacity="0.9"
+  />
+  <path
+    d="M60 38c10 6 16 14 18 26-4 3-10 5-18 5s-14-2-18-5c2-12 8-20 18-26z"
+    fill="#f97316"
+  />
+  <circle cx="48" cy="56" r="4" fill="#020617" />
+  <circle cx="72" cy="56" r="4" fill="#020617" />
+  <path
+    d="M50 66c2 3 6 5 10 5s8-2 10-5"
+    stroke="#020617"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+  <text
+    x="60"
+    y="30"
+    text-anchor="middle"
+    font-family="system-ui, sans-serif"
+    font-size="14"
+    font-weight="700"
+    fill="#020617"
+    letter-spacing="4"
+  >
+    WC
+  </text>
+</svg>
+
