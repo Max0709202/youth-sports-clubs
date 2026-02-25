@@ -1,21 +1,28 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}"
   ],
   theme: {
     extend: {
-      colors: {
-        primary: 'var(--color-primary)',
-        'primary-foreground': 'var(--color-primary-foreground)',
-        secondary: 'var(--color-secondary)',
-        accent: 'var(--color-accent)',
+      borderRadius: {
+        lg: "0.75rem",
+        xl: "1rem",
+        "2xl": "1.5rem"
       },
-    },
+      boxShadow: {
+        "soft-card": "0 18px 45px rgba(15, 23, 42, 0.18)"
+      },
+      fontFamily: {
+        display: ["system-ui", "sans-serif"],
+        sans: ["system-ui", "sans-serif"]
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
+
 export default config;

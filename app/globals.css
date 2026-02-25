@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme variables – default (non-tenant) */
+:root {
+  --bg: 15 23 42; /* slate-900 */
+  --bg-soft: 15 23 42;
+  --fg: 241 245 249; /* slate-100 */
+  --accent: 59 130 246; /* blue-500 */
+  --accent-soft: 37 99 235; /* blue-600 */
+  --card: 15 23 42;
+  --card-border: 30 64 175;
+}
+
+/* Tenant-aware values will override these on a wrapper element */
+
+body {
+  @apply bg-slate-950 text-slate-50 antialiased;
+  background: radial-gradient(circle at top left, #1e293b, #020617 55%);
+}
+
+/* Utilities for cards & surfaces */
+
+.surface-card {
+  @apply rounded-2xl border border-slate-800/80 bg-slate-900/80 shadow-soft-card;
+  backdrop-filter: blur(18px);
+}
+
+.surface-pill {
+  @apply rounded-full border border-slate-700/70 bg-slate-900/90;
+}
+
+/* Smooth transitions on theme changes */
+* {
+  transition-property: color, background-color, border-color, fill, stroke, box-shadow, transform;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
