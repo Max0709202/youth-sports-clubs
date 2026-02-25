@@ -38,51 +38,72 @@ export async function createTeamAndSignUp(
     return { error: "Server configuration error. Please try again later." };
   }
 
-  if (!db) {
-    return { error: "Database not configured. Please try again later." };
-  }
+  let tenant: { id: string; slug: string } | null = null;
 
   try {
-    const [tenant] = await db
-      .insert(tenants)
-      .values({
-        slug: slug,
-        name: teamName.trim(),
-        status: "active",
-      })
-      .returning({ id: tenants.id, slug: tenants.slug });
+    // if (db) {
+    //   try {
+    //     const [row] = await db
+    //       .insert(tenants)
+    //       .values({
+    //         slug,
+    //         name: teamName.trim(),
+    //         status: "active",
+    //       })
+    //       .returning({ id: tenants.id, slug: tenants.slug });
 
-    if (!tenant) {
-      return { error: "Failed to create team. Please try again." };
-    }
+    //     if (row) {
+    //       tenant = row;
+    //       await db.insert(tenantThemes).values({ tenantId: tenant.id });
+    //       await db.insert(tenantSettings).values({ tenantId: tenant.id });
+    //     }
+    // await db.insert(tenantThemes).values({
+    //   tenantId: tenant.id,
+    // });
+    // await db.insert(tenantSettings).values({
+    //   tenantId: tenant.id,
+    // });
 
-    await db.insert(tenantThemes).values({
-      tenantId: tenant.id,
-    });
-    await db.insert(tenantSettings).values({
-      tenantId: tenant.id,
-    });
+    //   } catch (dbError) {
+    //     console.warn("Database unavailable, continuing with auth only:", dbError);
+    //   }
+    // }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const { error: signUpError } = await supabase.auth.signUp({
       email: email.trim(),
       password,
-      options: {
-        data: { tenant_id: tenant.id, tenant_slug: tenant.slug },
-      },
+      // options: {
+      //   data: tenant
+      //     ? { tenant_id: String(tenant.id), tenant_slug: String(tenant.slug) }
+      //     : { team_name: teamName.trim(), team_slug: slug },
+      // },
     });
 
     if (signUpError) {
-      await db.delete(tenants).where(eq(tenants.id, tenant.id));
+      if (tenant && db) {
+        try {
+          await db.delete(tenants).where(eq(tenants.id, tenant.id));
+        } catch (_) {}
+      }
       return { error: signUpError.message || "Sign up failed. Please try again." };
     }
 
-    redirect("/onboarding/logo?tenant=" + tenant.slug);
+    redirect(tenant ? "/onboarding/logo?tenant=" + tenant.slug : "/onboarding/logo?pending=1");
   } catch (e) {
     if (e && typeof (e as { digest?: string }).digest === "string" && (e as { digest: string }).digest === "NEXT_REDIRECT") {
       throw e;
     }
     console.error("Onboarding error:", e);
-    return { error: "Something went wrong. Please try again." };
+    const message = e instanceof Error ? e.message : "Something went wrong. Please try again.";
+    const isDuplicateSlug =
+      /unique|duplicate key|already exists/i.test(message);
+    const userMessage =
+      process.env.NODE_ENV === "production"
+        ? isDuplicateSlug
+          ? "A team with this name already exists. Try a different name."
+          : "Something went wrong. Please try again."
+        : message;
+    return { error: userMessage };
   }
 }

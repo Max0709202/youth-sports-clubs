@@ -39,6 +39,19 @@ One codebase, thousands of team stores. Logo upload → branded store in minutes
    npm run dev
    ```
 
+### Fix: `getaddrinfo ENOTFOUND db.xxx.supabase.co`
+
+If you see this error when running the app or `db:migrate`, your machine can't resolve Supabase's **direct** DB host. Use the **connection pooler** URL instead:
+
+1. In [Supabase Dashboard](https://supabase.com/dashboard) → your project → **Settings** → **Database**.
+2. Under **Connection string**, choose **URI** and select **Connection pooling** (Session or Transaction mode).
+3. Copy the URI. It will look like:
+   - `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres`
+   (host is `*.pooler.supabase.com`, port **6543**).
+4. Set `DATABASE_URL` in `.env` or `.env.local` to this pooler URI (replace `[password]` with your DB password).
+
+Then run `npm run db:migrate` and `npm run dev` again.
+
 ## Multi-tenant routing
 
 - **No tenant:** Base host (e.g. `yoursite.com` or `localhost:3000`) → marketing site and onboarding.
