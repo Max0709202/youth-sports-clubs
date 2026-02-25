@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTenantFromHeaders } from "@/lib/tenant/context";
 import { db } from "@/lib/db";
 import { tenantProducts } from "@/lib/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, asc } from "drizzle-orm";
 
 export default async function HomePage() {
   const tenant = await getTenantFromHeaders();

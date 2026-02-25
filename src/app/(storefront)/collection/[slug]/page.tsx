@@ -1,7 +1,7 @@
 import { getTenantFromHeaders } from "@/lib/tenant/context";
 import { db } from "@/lib/db";
 import { tenantProducts } from "@/lib/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, asc } from "drizzle-orm";
 import Link from "next/link";
 import { formatMoney } from "@/lib/money";
 

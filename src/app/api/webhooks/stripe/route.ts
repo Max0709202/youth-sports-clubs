@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import { ensureEventStored, markProcessed } from "@/lib/webhooks/idempotency";
 import { env } from "@/lib/env";
 
-const stripe = env.STRIPE_SECRET_KEY ? new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2024-12-18.acacia" }) : null;
+const stripe = env.STRIPE_SECRET_KEY ? new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2025-02-24.acacia" }) : null;
 
 export async function POST(req: NextRequest) {
   if (!stripe || !env.STRIPE_WEBHOOK_SECRET) {
